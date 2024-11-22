@@ -30,3 +30,161 @@ Esta API proporciona un conjunto de endpoints para gestionar usuarios. Incluye f
 {
   "Content-Type": "application/json"
 }
+
+#### Body
+
+```json
+{
+  "email": "usuario@example.com",
+  "password": "contraseña123"
+}
+
+#### Respuesta Exitosa
+
+```json
+json
+Copy code
+{
+  "token": "Bearer token"
+}
+
+#### Respuesta de Error
+```json
+Copy code
+{
+  "message": "Credenciales inválidas"
+}
+
+Usuarios
+2. Listar Usuarios
+Método: GET
+URL: /api/users
+Descripción: Devuelve una lista de todos los usuarios registrados.
+Headers
+json
+Copy code
+{
+  "Authorization": "Bearer token"
+}
+Respuesta Exitosa
+json
+Copy code
+[
+  {
+    "id": 1,
+    "nombre": "John",
+    "apellido": "Doe",
+    "correo": "john.doe@example.com",
+    "telefono": "123456789"
+  }
+]
+Respuesta de Error
+json
+Copy code
+{
+  "message": "No autorizado"
+}
+3. Crear Usuario
+Método: POST
+URL: /api/users
+Descripción: Crea un nuevo usuario en el sistema.
+Headers
+json
+Copy code
+{
+  "Authorization": "Bearer token",
+  "Content-Type": "application/json"
+}
+Body (JSON)
+json
+Copy code
+{
+  "nombre": "Jane",
+  "apellido": "Doe",
+  "correo": "jane.doe@example.com",
+  "telefono": "987654321",
+  "password": "contraseña123"
+}
+Respuesta Exitosa
+json
+Copy code
+{
+  "message": "Usuario creado con éxito",
+  "user": {
+    "id": 2,
+    "nombre": "Jane",
+    "apellido": "Doe",
+    "correo": "jane.doe@example.com",
+    "telefono": "987654321"
+  }
+}
+Respuesta de Error
+json
+Copy code
+{
+  "message": "Error de validación",
+  "errors": {
+    "correo": ["El correo ya está en uso"]
+  }
+}
+4. Editar Usuario
+Método: PUT
+URL: /api/users/{id}
+Descripción: Actualiza los datos de un usuario existente.
+Headers
+json
+Copy code
+{
+  "Authorization": "Bearer token",
+  "Content-Type": "application/json"
+}
+Body (JSON)
+json
+Copy code
+{
+  "nombre": "Jane Updated",
+  "apellido": "Doe Updated",
+  "correo": "jane.updated@example.com",
+  "telefono": "111222333"
+}
+Respuesta Exitosa
+json
+Copy code
+{
+  "message": "Usuario actualizado con éxito",
+  "user": {
+    "id": 2,
+    "nombre": "Jane Updated",
+    "apellido": "Doe Updated",
+    "correo": "jane.updated@example.com",
+    "telefono": "111222333"
+  }
+}
+Respuesta de Error
+json
+Copy code
+{
+  "message": "Usuario no encontrado"
+}
+5. Eliminar Usuario
+Método: DELETE
+URL: /api/users/{id}
+Descripción: Elimina un usuario del sistema.
+Headers
+json
+Copy code
+{
+  "Authorization": "Bearer token"
+}
+Respuesta Exitosa
+json
+Copy code
+{
+  "message": "Usuario eliminado con éxito"
+}
+Respuesta de Error
+json
+Copy code
+{
+  "message": "Usuario no encontrado"
+}
