@@ -26,5 +26,8 @@ RUN chown -R www-data:www-data /var/www
 # Instala dependencias de PHP con Composer
 RUN composer install --no-dev --optimize-autoloader
 
-# Comando para iniciar PHP-FPM
-CMD ["php-fpm", "php artisan serve --host=0.0.0.0 --port=8000"]
+# Exponer el puerto 8000 para que el contenedor sea accesible
+EXPOSE 9000
+
+# Comando para iniciar el servidor de Laravel, escuchando en todas las interfaces
+CMD php artisan serve --host=0.0.0.0 --port=9000
