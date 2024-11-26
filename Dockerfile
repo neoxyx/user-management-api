@@ -27,4 +27,4 @@ RUN chown -R www-data:www-data /var/www
 RUN composer install --no-dev --optimize-autoloader
 
 # Comando para iniciar PHP-FPM
-CMD ["php-fpm"]
+CMD ["php-fpm", "php artisan serve --host=0.0.0.0 --port=8000"]
