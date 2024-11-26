@@ -1,29 +1,37 @@
-# Dockerfile
-# Usando PHP con Apache
-FROM php:8.1-apache
+# Imagen base con PHP 8.1
+FROM php:8.1-fpm
 
-# Instalar dependencias
-RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev zip git && \
-    docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install gd pdo pdo_mysql
+# Instala dependencias del sistema
+RUN apt-get update && apt-get install -y \
+    zip \
+    unzip \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# Copiar archivos del proyecto
-COPY . /var/www/html
+# Instala Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copiar archivo .env y configurar variables de entorno
-ENV DATABASE_URL=${MYSQL_URL}
+# Copia los archivos de la aplicación
+WORKDIR /var/www
+COPY . .
 
-# Instalar Composer y dependencias de Laravel
-RUN curl -sS https://getcomposer.org/installer | php && \
-    mv composer.phar /usr/local/bin/composer && \
-    composer install --optimize-autoloader --no-dev
+# Establece los permisos
+RUN chown -R www-data:www-data /var/www
 
-# Ejecutar migraciones y seeders, etc.
+# Instala dependencias de PHP con Composer
+RUN composer install --no-dev --optimize-autoloader
+# Ejecutar migraciones y cache
+# Ejecutar migraciones y seeders
 RUN php artisan migrate --force && \
     php artisan db:seed --force && \
     php artisan config:cache && \
     php artisan route:cache && \
     php artisan storage:link
 
-# Exponer puerto 80
-EXPOSE 80
+# Comando para iniciar PHP-FPM
+CMD ["php-fpm"]
