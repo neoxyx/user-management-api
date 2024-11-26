@@ -11,11 +11,7 @@ RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev
 COPY . /var/www/html
 
 # Copiar archivo .env y configurar variables de entorno
-ENV DB_HOST=${MYSQL_HOST}
-ENV DB_PORT=${MYSQL_PORT:-3306}
-ENV DB_DATABASE=${MYSQL_DATABASE}
-ENV DB_USERNAME=${MYSQL_USER}
-ENV DB_PASSWORD=${MYSQL_PASSWORD}
+ENV DATABASE_URL=${MYSQL_URL}
 
 # Instalar Composer y dependencias de Laravel
 RUN curl -sS https://getcomposer.org/installer | php && \
