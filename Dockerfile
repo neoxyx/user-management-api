@@ -26,6 +26,5 @@ RUN chown -R www-data:www-data /var/www
 # Instala dependencias de PHP con Composer
 RUN composer install --no-dev --optimize-autoloader
 
-CMD php artisan serve --host=0.0.0.0 --port=9000
 # Comando para iniciar PHP-FPM
 CMD ["php-fpm"]
