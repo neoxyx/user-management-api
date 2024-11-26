@@ -25,6 +25,13 @@ RUN chown -R www-data:www-data /var/www
 
 # Instala dependencias de PHP con Composer
 RUN composer install --no-dev --optimize-autoloader
+# Ejecutar migraciones y cache
+# Ejecutar migraciones y seeders
+RUN php artisan migrate --force && \
+    php artisan db:seed --force && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan storage:link
 
 # Comando para iniciar PHP-FPM
 CMD ["php-fpm"]
